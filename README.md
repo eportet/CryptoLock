@@ -5,7 +5,7 @@ This assumes you have a Raspberry Pi and can access it via a terminal/ssh.
 
 1. **Install and Setup Geth**
 
-   * Copy the URL for the latest build from [here](https://geth.ethereum.org/downloads/) for ARMv7.
+   Copy the URL for the latest build from [here](https://geth.ethereum.org/downloads/) for ARMv7.  
 
    ```
    wget https://gethstore.blob.core.windows.net/builds/geth-linux-arm7-1.8.3-329ac18e.tar.gz
@@ -23,6 +23,8 @@ This assumes you have a Raspberry Pi and can access it via a terminal/ssh.
    > eth.syncing // Use to track progress of sync
    > eth.personal.NewAccount() // Use to create account for identification in the Ethereum Network
    ```
+   
+   *Note: The installation of the Blockchain will take around 1.5 days. We recommend going to Step 7 during this time and installing Ethereum Wallet.*
    
    *Note: At this time the latest build is for v1.8.3.*
 
