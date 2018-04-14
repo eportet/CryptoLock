@@ -5,8 +5,7 @@ This assumes you have a Raspberry Pi and can access it via a terminal/ssh.
 
 1. **Install and Setup Geth**
 
-   Copy the URL for the latest build from [here](https://geth.ethereum.org/downloads/) for ARMv7.  
-   *At this time the latest build is for v1.8.3.*
+   * Copy the URL for the latest build from [here](https://geth.ethereum.org/downloads/) for ARMv7.
 
    ```
    wget https://gethstore.blob.core.windows.net/builds/geth-linux-arm7-1.8.3-329ac18e.tar.gz
@@ -24,6 +23,8 @@ This assumes you have a Raspberry Pi and can access it via a terminal/ssh.
    > eth.syncing // Use to track progress of sync
    > eth.personal.NewAccount() // Use to create account for identification in the Ethereum Network
    ```
+   
+   *Note: At this time the latest build is for v1.8.3.*
 
 2. **Install [Node and NPM](https://github.com/audstanley/NodeJs-Raspberry-Pi)**
 
@@ -42,7 +43,9 @@ This assumes you have a Raspberry Pi and can access it via a terminal/ssh.
    npm install web3@0.19 --save
    ```
    
-   You can import our `blink.js` file or your own to this directory.
+   * You can import our `blink.js` file or your own to this directory.
+   
+   *Note: This will only work if you are using `web3@0.19` since some of the features used here have been deprecated/removed in the latest version.*
 
 5. **Set Up Raspberry Pi**
 
@@ -56,7 +59,7 @@ This assumes you have a Raspberry Pi and can access it via a terminal/ssh.
    geth --rinkeby --rpc
    ```
    
-   This should output somewhere the port where the node will be run. Usually `Port 8545`. If you were not able to see a port, it problably means you haven't finished syncing.
+   * This should output somewhere the port where the node will be run. Usually `Port 8545`. If you were not able to see a port, it problably means you haven't finished syncing.
 
 7. **Host Contract on Ethereum Network**
 
@@ -65,13 +68,13 @@ This assumes you have a Raspberry Pi and can access it via a terminal/ssh.
 
 8. **Run `blink.js` on the Raspberry Pi**
 
-   Open a new terminal while hosting an Ethereum Node (see step 6).
+   * Open a new terminal while hosting an Ethereum Node (see step 6).
    
    ```
    sudo node blink.js
    ```
    
-   If no errors occurr, the program should output some information and then wait for the Blink contract to be triggered from the Ethereum Wallet.
+   * If no errors occurr, the program should output some information and then wait for the Blink contract to be triggered from the Ethereum Wallet.
 
 9. **Trigger the Contract**
    
