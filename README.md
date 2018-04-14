@@ -3,105 +3,77 @@ Simple Blink Example using Raspberry Pi, LED Light and Ethereum
 
 This assumes you have a Raspberry Pi and can access it via a terminal/ssh.
 
-**1.  Install Geth - Linux Release for ARMv7 - https://geth.ethereum.org/downloads/**
+1. **Install and Setup Geth**
 
-Copy the URL for the latest build. At this time the latest build is for v1.8.3.
+   Copy the URL for the latest build from [here](https://geth.ethereum.org/downloads/) for ARMv7.  
+   *At this time the latest build is for v1.8.3.*
 
-`wget https://gethstore.blob.core.windows.net/builds/geth-linux-arm7-1.8.3-329ac18e.tar.gz`
-`tar -xvf geth-linux-arm7-1.8.3-329ac18e.tar.gz`
-`cd geth-linux-arm7-1.8.3-329ac18e`
-`sudo mv geth /usr/local/bin/`
-`cd ~`
-`geth version`
+   ```
+   wget https://gethstore.blob.core.windows.net/builds/geth-linux-arm7-1.8.3-329ac18e.tar.gz
+   tar -xvf geth-linux-arm7-1.8.3-329ac18e.tar.gz
+   cd geth-linux-arm7-1.8.3-329ac18e
+   sudo mv geth /usr/local/bin/
+   cd ~
+   geth version
+   ```
 
-2.  Install NodeJS
-		source:  http://thejackalofjavascript.com/getting-started-raspberry-pi-node-js/
-		Note: can use a 2nd terminal window and get all the way to testing an LED with nodejs, but without Ethereum, while the geth node is     syncing.
+   Once you have installed Geth, you can start syncing the blockchain.
 
-				2.1 (Update system)
-				'sudo apt-get update -y && sudo apt-get upgrade -y'
+   ```
+   geth --rinkeby --syncmode=fast --cache=96 console
+   > eth.syncing // Use to track progress of sync
+   > eth.personal.NewAccount() // Use to create account for identification in the Ethereum Network
+   ```
 
-				2.2 Check to see if your pi already has node with:
-				'node -v'
-				If not, then download latest node version for arm:
-				'wget http://node-arm.herokuapp.com/node_latest_armhf.deb'
-				install that bad boy
-				'sudo dpkg -i node_latest_armhf.deb'
-				test run of node - calls for version, if version present, then you're ready to move on.
-				'node -v'
+2. **Install [Node and NPM](https://github.com/audstanley/NodeJs-Raspberry-Pi)**
 
+   ```
+   sudo wget -O - https://raw.githubusercontent.com/audstanley/NodeJs-Raspberry-Pi/master/Install-Node.sh | sudo bash node -v
+   ```
 
-3. Install npm on RPi
+4. **Create Project Folder and Install Dependencies**
 
-	'sudo apt-get install npm -y'
+   ```
+   cd ~
+   mkdir blink
+   cd blink
+   npm init
+   npm install onoff --save
+   npm install web3@0.19 --save
+   ```
+   
+   You can import our `blink.js` file or your own to this directory.
 
-4. Create node project folder:
+5. **Set Up Raspberry Pi**
 
-	'mkdir blink'
+   http://thejackalofjavascript.com/raspberry-pi-node-js-led-emit-morse-code/
 
-	'cd blink'
+6. **Host Ethereum Node**
 
-	'npm init'
+   Assuming Geth has finished syncing, open a new terminal and start Geth in RPC mode.
+   
+   ```
+   geth --rinkeby --rpc
+   ```
+   
+   This should output somewhere the port where the node will be run. Usually `Port 8545`. If you were not able to see a port, it problably means you haven't finished syncing.
 
+7. **Host Contract on Ethereum Network**
 
-5. In that project folder, install onoff and web3 modules
+   * For this we will use the [Ethereum Wallet](https://github.com/ethereum/mist/releases). When you setup the Wallet make sure you download the same Network that you downloaded for the Raspberry Pi. In our case we used the Rinkeby Test Network.
+   * Once finished setting up the Wallet, head to the Contract tab and create your contract or, if you would prefer, you can load our Contract using this address for the Rinkeby Network `address` and this ABI String `string`.
 
-				5.1 Install onoff
-				'npm install onoff --save'
+8. **Run `blink.js` on the Raspberry Pi**
 
-				I needed to apply fix to current release of Jessie Raspbian from errors from this command
-				source: https://www.raspberrypi.org/forums/viewtopic.php?f=66&t=127939
+   Open a new terminal while hosting an Ethereum Node (see step 6).
+   
+   ```
+   sudo node blink.js
+   ```
+   
+   If no errors occurr, the program should output some information and then wait for the Blink contract to be triggered from the Ethereum Wallet.
 
-				edit file:
-				'sudo nano /usr/include/nodejs/deps/v8/include/v8.h'
-				in that file change:
-				enum WriteOptions {
-						NO_OPTIONS = 0,
-						HINT_MANY_WRITES_EXPECTED = 1,
-					 NO_NULL_TERMINATION = 2,
-					 PRESERVE_ASCII_NULL = 4,
-				 };
-
-				to this:
-				enum WriteOptions {
-					 NO_OPTIONS = 0,
-					 HINT_MANY_WRITES_EXPECTED = 1,
-					 NO_NULL_TERMINATION = 2,
-					 PRESERVE_ASCII_NULL = 4,
-					 REPLACE_INVALID_UTF8 = 0
-				};
-
-				5.2 Install web3
-				'npm install web3 --save'
-
-
-6.  Wire up your LED and let's make sure your LED can be blinked by a nodejs program by following these directions:
-http://thejackalofjavascript.com/raspberry-pi-node-js-led-emit-morse-code/
-
-
-7. Let's use the blockchain now.
-
-				7.1 Assuming the geth is completed syncing lets stop the process and restart with rpc.
-						'./geth --rpc console'
-
-				7.2 Run ethtest.js in a separate terminal instance (put that in your blink dir)
-						'sudo node ethtest.js'
-						needs sudo to control GPIO
-
-
-8. Load contract in your ethereum-wallet on local computer
-
-				8.1 Use this: https://github.com/ethereum/mist/releases
-
-				8.2 On contract tab, load contract from ethtest.js.
-							Using the existing contract this address will be: 0x9535eb707582edb3317dfdcdb751ce41865005fc (Note: Ropsten testnet address)
-							If you deployed your own contract, then use that address.
-							The ABI you will need to insert into mist is located in the "blink.js" file.
-
-				8.3 Interact with the contract through the wallet by using set function in bottom right of window and set an integer value.
-
-				8.4 Sign the transaction (currently costs around 0.0012 ether) and send it off.
-
-				8.5 2 blocks later, you should have a blinking led assuming step 6 worked for you.  Console window of nodejs ethtest.js should also output a blink message.
-
-				8.6 Visit etherscan.io or testnet.etherscan.io to view your transaction in the blockchain.
+9. **Trigger the Contract**
+   
+   * Go back to the contract page and write to the Contract using the `Set` function. Select any value you want, since it won't affect anything, and execute this transacction.
+   * After a couple of seconds you should have a blinking LED and a promt on your `blink.js` terminal notifying you of this event.
