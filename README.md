@@ -66,7 +66,10 @@ This assumes you have a Raspberry Pi and can access it via a terminal/ssh.
 7. **Host Contract on Ethereum Network**
 
    * For this we will use the [Ethereum Wallet](https://github.com/ethereum/mist/releases). When you setup the Wallet make sure you download the same Network that you downloaded for the Raspberry Pi. In our case we used the Rinkeby Test Network.
-   * Once finished setting up the Wallet, head to the Contract tab and create your contract or, if you would prefer, you can load our Contract using this address for the Rinkeby Network `address` and this ABI String `string`.
+   * Once finished setting up the Wallet, head to the Contract tab and create your contract or, if you would prefer, you can load our Contract using this address for the Rinkeby Network `0x9cBF965F360bF96DdcC3E150310ae49747b5a2Dd` and this ABI String: 
+   ```
+   [ { "constant": false, "inputs": [ { "name": "x", "type": "uint256" } ], "name": "set", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "get", "outputs": [ { "name": "retVal", "type": "uint256", "value": "18" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": false, "name": "data", "type": "uint256" } ], "name": "ItBlinks", "type": "event" } ]
+   ```
 
 8. **Run `blink.js` on the Raspberry Pi**
 
