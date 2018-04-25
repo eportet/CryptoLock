@@ -1,5 +1,5 @@
 # CryptoLock
-Simple Gatekeeping using Raspberry Pi, LED Lights, Button and Ethereum
+Gatekeeping using Raspberry Pi, LED Lights, RFID Reader and Ethereum
 
 This assumes you have a Raspberry Pi and can access it via a terminal/ssh.
 
@@ -43,6 +43,8 @@ This assumes you have a Raspberry Pi and can access it via a terminal/ssh.
    npm init
    npm install onoff --save
    npm install web3@0.19 --save
+   npm install serialport --save
+   npm install pn532 --save
    ```
 
    * You can import our `gatekeep.js` file or your own to this directory.

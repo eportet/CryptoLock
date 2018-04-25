@@ -54,12 +54,12 @@ rfid.on('ready', function() {
 					console.log("**** OPEN GATE ****");
 					redled.writeSync(0);
 					greenled.writeSync(1);
-					spawn('python',["opendoor.py"]);
+					spawn('python',["motor/opendoor.py"]);
 					setTimeout(function() {
 						console.log("**** CLOSE GATE ****");
 						redled.writeSync(1);
 						greenled.writeSync(0);
-						spawn('python',["closedoor.py"]);
+						spawn('python',["motor/closedoor.py"]);
 					}, 5000)
 				} else {
 					console.log("***** INVALID *****");
