@@ -1,3 +1,7 @@
+# TODO
+
+Update this README file.
+
 # CryptoLock
 Gatekeeping using Raspberry Pi, LED Lights, RFID Reader and Ethereum
 
