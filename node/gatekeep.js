@@ -1,15 +1,13 @@
 var Gpio = require('onoff').Gpio;
-var greenled = new Gpio(23, 'out');
-var redled = new Gpio(24, 'out');
-var pn532 = require('pn532');
 var SerialPort = require('serialport');
-var port = new SerialPort('/dev/ttyS0', { baudRate: 115200 });
-var rfid = new pn532.PN532(port);
+var pn532 = require('pn532');
 var ndef = require('ndef');
 var spawn = require("child_process").spawn;
 
-redled.writeSync(1);
-greenled.writeSync(0);
+var greenled = new Gpio(23, 'out');
+var redled = new Gpio(24, 'out');
+var port = new SerialPort('/dev/ttyS0', { baudRate: 115200 });
+var rfid = new pn532.PN532(port);
 
 var Web3 = require('web3');
 var web3 = new Web3();
@@ -28,6 +26,9 @@ var GatekeeperABIString = '[ { "constant": true, "inputs": [ { "name": "_address
 var GatekeeperABI = JSON.parse(GatekeeperABIString);
 var GatekeeperContractAddress = '0xd189CaB96c0ee645e6eE80BE79979FaDccfe1055';
 var Gatekeeper = web3.eth.contract(GatekeeperABI).at(GatekeeperContractAddress);
+
+redled.writeSync(1);
+greenled.writeSync(0);
 
 console.log('\n********* READY *********');
 
