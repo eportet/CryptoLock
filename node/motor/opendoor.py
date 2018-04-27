@@ -14,7 +14,7 @@ GPIO.setup(STEP, GPIO.OUT)
 GPIO.output(DIR, CCW)
 
 step_count = SPR
-delay = 0.005 #keep above 001 #smaller turns faster
+delay = 0.001 #keep above 001 #smaller turns faster
 for x in range(step_count):
     GPIO.output(STEP, GPIO.HIGH)
     sleep(delay)
