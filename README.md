@@ -25,7 +25,7 @@ This assumes you have a Raspberry Pi and can access it via a terminal/ssh.
    ```
    geth --rinkeby --syncmode=fast --cache=96 console
    > eth.syncing // Use to track progress of sync
-   > eth.personal.NewAccount() // Use to create account for identification in the Ethereum Network
+   > personal.newAccount() // Use to create account for identification in the Ethereum Network
    ```
 
    *Note: The installation of the Blockchain will take around 1.5 days. We recommend going to Step 7 during this time and installing Ethereum Wallet.*
