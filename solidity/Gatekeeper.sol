@@ -4,29 +4,52 @@ contract Gatekeeper {
 
   struct Account {
     bool isValid;
+    string cardData;
     string fName;
     string lName;
   }
 
-  mapping (address => Account) accounts;
-  address[] private authorizedAccts;
+  mapping (string => Account) accounts;
+  string data;
 
-  function Gatekeeper() public{
-    setAccount(0xa1b29Ae29C6A877383Ad50F5a66EE2Ef0a75e84E, "Eduardo", "Portet");
+  constructor() public{
+    setAccount("helo", "Eduardo", "Portet");
   }
 
-  function setAccount(address _address, string _fName, string _lName) private {
-    Account storage account = accounts[_address];
+  function setAccount(string _cardData, string _fName, string _lName) private {
+    data = _cardData;
+
+    Account storage account = accounts[_cardData];
 
     account.isValid = true;
     account.fName = _fName;
     account.lName = _lName;
 
-    authorizedAccts.push(_address) -1;
   }
 
-  function authorizeAddress(address _address) public constant returns (bool){
-    Account storage account = accounts[_address];
-    return account.isValid;
+  function getValidData() public view returns (string) {
+    return data;
   }
+
+  function moveData(string _cardData, string _newData) private returns (bool){
+    accounts[_newData].isValid = true;
+    accounts[_newData].fName = accounts[_cardData].fName;
+    accounts[_newData].lName = accounts[_cardData].lName;
+
+    accounts[_cardData].isValid = false;
+    accounts[_cardData].fName = "";
+    accounts[_cardData].lName = "";
+
+    data = _newData;
+    return true;
+  }
+
+  function check(string _cardData, string _newData) public returns (bool) {
+    if (accounts[_cardData].isValid) {
+        return moveData(_cardData, _newData);
+    } else {
+     return false;
+    }
+  }
+
 }

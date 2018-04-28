@@ -34,8 +34,8 @@ console.log("Using Wallet ID: " + coinbase);
 web3.eth.defaultAccount = web3.eth.accounts[0];
 
 // Connect to SmartContract
-var GatekeeperABI = JSON.parse('[ { "constant": true, "inputs": [ { "name": "_address", "type": "address" } ], "name": "authorizeAddress", "outputs": [ { "name": "isValid", "type": "bool", "value": false } ], "payable": false, "stateMutability": "view", "type": "function" }, { "inputs": [], "payable": false, "stateMutability": "nonpayable", "type": "constructor" } ]');
-var GatekeeperContractAddress = '0xd189CaB96c0ee645e6eE80BE79979FaDccfe1055';
+var GatekeeperABI = JSON.parse('[ { "constant": false, "inputs": [ { "name": "_cardData", "type": "string" }, { "name": "_newData", "type": "string" } ], "name": "check", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "getValidData", "outputs": [ { "name": "", "type": "string", "value": "helo" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "inputs": [], "payable": false, "stateMutability": "nonpayable", "type": "constructor" } ]');
+var GatekeeperContractAddress = '0x630583cc80Dd3FddcCfBa12aB62abA4294De8393';
 var Gatekeeper = web3.eth.contract(GatekeeperABI).at(GatekeeperContractAddress);
 
 // Turn on LED lights
@@ -63,17 +63,12 @@ function scanTag(action) {
     } else {
       var records = ndef.decodeMessage(Array.from(data));
       var cardscan = JSON.parse(JSON.stringify(records))[1]['value'].toString();
-      //console.log(cardscan == action.hash);
-      if (cardscan == action.hash) {
-        var isValid = Gatekeeper.authorizeAddress(action.value);
-        if (isValid) {
-          openGate(action);
-          writeTag(action);
-        }
+      var new_data = web3.sha3(web3.eth.blockNumber.toString()).slice(-4).toString();
+      if (Gatekeeper.check(cardscan, new_data)) {
+        openGate(action);
+        writeTag(action, new_data);
       } else {
         console.log("***** INVALID *****");
-        //console.log(cardscan);
-        //console.log(action.hash);
         blinkRedLight(3,action);
       }
     }
@@ -81,7 +76,6 @@ function scanTag(action) {
 }
 
 function writeTag(action) {
-  var new_hash = web3.sha3(web3.eth.blockNumber.toString()).slice(-4).toString();
 
   var messages = [
   ndef.uriRecord(''),
