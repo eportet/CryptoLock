@@ -5,7 +5,6 @@ var SerialPort = require('serialport');
 var pn532 = require('pn532');
 var ndef = require('ndef');
 var spawn = require("child_process").spawn;
-var fs = require("fs");
 
 // Initializing variables
 var greenled = new Gpio(23, 'out');
@@ -13,8 +12,7 @@ var redled = new Gpio(24, 'out');
 var port = new SerialPort('/dev/ttyS0', { baudRate: 115200 });
 var rfid = new pn532.PN532(port);
 var web3 = new Web3();
-var action = JSON.parse(fs.readFileSync("action.json"));
-action.run = true;
+var action = {"run": true};
 
 // Attach to local Geth RPC
 web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
@@ -29,6 +27,8 @@ if (web3.isConnected()){
 // Get this device's Wallet ID
 var coinbase = web3.eth.accounts[0];
 console.log("Using Wallet ID: " + coinbase);
+console.log("Balance: " + web3.eth.getBalance(coinbase));
+web3.personal.unlockAccount(web3.personal.listAccounts[0],"", 15000)
 
 // Set as default account
 web3.eth.defaultAccount = web3.eth.accounts[0];
@@ -41,8 +41,6 @@ var Gatekeeper = web3.eth.contract(GatekeeperABI).at(GatekeeperContractAddress);
 // Turn on LED lights
 redled.writeSync(1);
 greenled.writeSync(0);
-
-console.log(action);
 
 rfid.on('ready', function() {
   // RFID Reader Identified
@@ -57,16 +55,26 @@ rfid.on('ready', function() {
 function scanTag(action) {
   action.run = false;
   rfid.readNdefData().then(function(data) {
-    if (data === undefined) {
+    if (typeof data == "undefined") {
       console.log("**** UNDEFINED ****");
       blinkRedLight(4, action);
     } else {
       var records = ndef.decodeMessage(Array.from(data));
       var cardscan = JSON.parse(JSON.stringify(records))[1]['value'].toString();
       var new_data = web3.sha3(web3.eth.blockNumber.toString()).slice(-4).toString();
-      if (Gatekeeper.check(cardscan, new_data)) {
+      //console.log("Card: " + cardscan + " New: " + new_data);
+      if (Gatekeeper.check.call(cardscan, new_data)) {
         openGate(action);
-        writeTag(action, new_data);
+        Gatekeeper.check.sendTransaction(cardscan,new_data, {
+            from:web3.eth.accounts[0],
+            gas:4000000},function (error, result){ //get callback from function which is your transaction key
+                if(!error){
+                    //console.log(result);
+                    writeTag(action, new_data);
+                } else{
+                    console.log(error);
+                }
+        });
       } else {
         console.log("***** INVALID *****");
         blinkRedLight(3,action);
@@ -75,20 +83,17 @@ function scanTag(action) {
   });
 }
 
-function writeTag(action) {
-
+function writeTag(action, new_data) {
+  rfid.scanTag().then(function(tag) {
   var messages = [
-  ndef.uriRecord(''),
-  ndef.textRecord(new_hash)
+  ndef.uriRecord('http://www.google.com'),
+  ndef.textRecord(new_data)
   ];
   var data = ndef.encodeMessage(messages);
 
   rfid.writeNdefData(data).then(function(response) {
-    action.hash = new_hash;
-    //console.log(new_hash);
-    fs.writeFileSync('action.json', JSON.stringify(action));
-    console.log('WRITE SUCCESSFUL');
-    //console.log(action);
+    console.log("WROTE: " +  new_data);
+  });
   });
 }
 
