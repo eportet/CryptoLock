@@ -7,6 +7,8 @@ Gatekeeping using Raspberry Pi, LED Lights, RFID Reader and Ethereum
 
 ## Installation Guide
 
+Preamble: [IoT-Blink](https://github.com/BUConnectedWorld/Group3/tree/blink) using Ethereum Network
+
 1. **Install and Setup Geth**
 
    Copy the URL for the latest build from [here](https://geth.ethereum.org/downloads/) for ARMv7.
