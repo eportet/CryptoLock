@@ -1,11 +1,11 @@
 # CryptoLock
 Gatekeeping using Raspberry Pi, LED Lights, RFID Reader and Ethereum
 
-This assumes you have a Raspberry Pi and can access it via a terminal/ssh.
-
-## Video
+## Video Overview
 
 [Video](https://www.youtube.com/)
+
+## Installation Guide
 
 1. **Install and Setup Geth**
 
