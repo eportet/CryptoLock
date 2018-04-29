@@ -34,15 +34,13 @@ rfid.on('ready', function() {
 
   console.log('Waiting for a tag...');
   rfid.scanTag().then(function(tag) {
-    console.log('Tag found:', tag);
-
     var messages = [
       ndef.uriRecord('http://www.google.com'),
       ndef.textRecord(carddata)
     ];
+
     var data = ndef.encodeMessage(messages);
 
-    console.log('Writing tag data...');
     rfid.writeNdefData(data).then(function(response) {
       console.log("Wrote: " + carddata + " to card");
     });
