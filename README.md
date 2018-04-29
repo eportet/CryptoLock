@@ -51,8 +51,8 @@ Gatekeeping using Raspberry Pi, LED Lights, RFID Reader and Ethereum
    * You will need to have 2 LEDs, an RFID Reader and a Stepper Motor connected to the Raspberry Pi.
    * ELECTOHOUSE WIRELESS-NFC-PN532
    * HYBRID STEPPING MOTOR 42BYGHM809
-   
-   TODO INSERT DIAGRAM
+
+   ![Wiring](docs/img/wiring.png)
 
 6. **Host Ethereum Node**
 
