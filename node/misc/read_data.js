@@ -13,7 +13,7 @@ rfid.on('ready', function() {
         rfid.readNdefData().then(function(data) {
             var records = ndef.decodeMessage(Array.from(data));
 			var r = JSON.parse(JSON.stringify(records));
-			console.log("Data: " + r[1]);
+			console.log("Data: " + r[1]['value']);
         });
     });
 });
