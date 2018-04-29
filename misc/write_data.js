@@ -1,6 +1,5 @@
 var pn532 = require('pn532');
 var SerialPort = require('serialport');
-var fs = require("fs");
 var Web3 = require('web3');
 
 var serialPort = new SerialPort('/dev/ttyS0', { baudRate: 115200 });
