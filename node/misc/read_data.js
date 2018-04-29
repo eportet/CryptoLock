@@ -11,9 +11,13 @@ rfid.on('ready', function() {
     console.log('Listening for a tag scan...');
     rfid.on('tag', function(tag) {
         rfid.readNdefData().then(function(data) {
-            var records = ndef.decodeMessage(Array.from(data));
-			var r = JSON.parse(JSON.stringify(records));
-			console.log("Data: " + r[1]['value']);
+            if (data === undefined) {
+            	console.log("UNDEFINED")
+            } else {
+            	var records = ndef.decodeMessage(Array.from(data));
+				var r = JSON.parse(JSON.stringify(records));
+				console.log("Data: " + r[1]['value']);
+            }
         });
     });
 });
