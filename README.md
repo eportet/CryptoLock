@@ -1,9 +1,9 @@
 # CryptoLock
-Gatekeeping using Raspberry Pi, LED Lights, RFID Reader and Ethereum
+Gatekeeping using Raspberry Pi, LED Lights, RFID Reader and Ethereum. Check the [report document](https://github.com/eportet/CryptoLock/blob/master/docs/CryptoLock.pdf) for a more in-depth description and outcomes.
 
 ## Video Overview
 
-[Video](https://drive.google.com/file/d/1XqdrD5s2ShEbTG0dDC05tsKI7cmUuk6m/view?usp=sharing)
+[![Demo Video](https://drive.google.com/uc?id=1Gm6biUcSDG3nOE047m9Wd85XoqrNCABH)](https://drive.google.com/file/d/1XqdrD5s2ShEbTG0dDC05tsKI7cmUuk6m/view?usp=sharing)
 
 ## Installation Guide
 
