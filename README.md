@@ -3,7 +3,7 @@ Gatekeeping using Raspberry Pi, LED Lights, RFID Reader and Ethereum. Check the 
 
 ## Video Overview
 
-[![Demo Video](https://drive.google.com/uc?id=1Gm6biUcSDG3nOE047m9Wd85XoqrNCABH)](https://drive.google.com/file/d/1XqdrD5s2ShEbTG0dDC05tsKI7cmUuk6m/view?usp=sharing)
+[![Demo Video](https://drive.google.com/uc?id=1Gm6biUcSDG3nOE047m9Wd85XoqrNCABH)](https://youtu.be/iSO2d_fJmAw)
 
 ## Installation Guide
 
